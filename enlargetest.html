@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .picture{
+            background-image: url("success.jpg");
+            background-size: 400px 400px;
+            height:400px;
+            width: 400px;
+            position: absolute;
+            left:0;
+            top:0;
+        }
+        .f{
+            position: absolute;
+            height: 200px;
+            width: 200px;
+            background-color: yellow;
+            opacity: 0.5;
+            left:0;
+            top:0;
+        }
+        .magnifier{
+            position: relative;
+            top: 0;
+            left: 400px;
+            height:500px;
+            width: 500px;
+            display: none;
+        }
+        .magnifier:before{
+            content: "+";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="picture" id="bbb">
+        <div class="f"></div>
+    </div>
+    <div class="magnifier">
+    </div>
+
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    var b= document.getElementById('bbb');var a={};
+    $(function(){
+        $('div.picture').mouseenter(function (e) {
+            a.x=e.pageX;
+            a.y=e.pageY;
+
+            $("div.magnifier").css({
+                "display":"block",
+                "background":'url(success.jpg)',
+                "backgroundSize":'1000px 1000px'
+                ,"backgroundPosition":"0px 0px",
+                "backgroundRepeat":"no-repeat"
+            });
+
+            });
+        $(document).on("mousemove","div.picture",function(e){
+            a.x=e.pageX;
+            a.y=e.pageY;
+            a.xb=a.x/400;a.yb=a.y/400;
+            var bp = a.xx+"px "+a.yy+"px";
+            var fp = a.fx+"px "+a.fy+"px";
+            if(a.xb>=0.25&&a.xb<=0.75&&a.yb>=0.25&&a.yb<=0.75)
+            { a.xx=(a.xb-0.25)*-1000;a.yy=(a.yb-0.25)*-1000;
+              a.fx=a.x-100;a.fy=a.y-100}
+            else if(a.xb<=0.25&&a.yb>=0.25&&a.yb<=0.75)
+            {a.xx=0;a.yy=(a.yb-0.25)*-1000;
+                a.fx=0;a.fy=a.y-100}
+            else if(a.xb>=0.75&&a.yb>=0.25&&a.yb<=0.75)
+            {a.xx=-500;a.yy=(a.yb-0.25)*-1000;
+                a.fx=200;a.fy=a.y-100}
+            else if(a.yb<=0.25&&a.xb>=0.25&&a.xb<=0.75)
+            {a.xx=(a.xb-0.25)*-1000;a.yy=0;
+                a.fx=a.x-100;a.fy=0}
+            else if(a.yb>=0.75&&a.xb>=0.25&&a.xb<=0.75)
+            {a.xx=(a.xb-0.25)*-1000;a.yy=-500;
+                a.fx=a.x-100;a.fy=200}
+
+            $("div.magnifier").css({
+                "backgroundPosition":bp
+            });
+            $("div.f").css({
+                "left":a.fx,
+                "top":a.fy
+            });
+        });
+        $('div.picture').mouseout(function (e) {
+            $("div.magnifier").css("display","none");
+        });
+    });
+</script>
+</html>
